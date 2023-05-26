@@ -165,3 +165,49 @@ select id , admission_no,first_name,last_name,age,city from Student
 where admission_no = @admission_no and age = @age
 end
 spStudent2 4213,17
+
+create view v1
+as select id from Student
+
+create view v2
+as select id,first_name,last_name from Student
+
+select * from v2
+---try catch in sp
+begin try
+update Student set age = 'aa' where first_name= 'Luisa'
+end try
+
+begin catch
+    select
+	ERROR_NUMBER() as errornumber,
+	ERROR_SEVERITY() as errorseverity,
+	ERROR_PROCEDURE() as errorProcedure,
+	ERROR_LINE() as errorline,
+	ERROR_MESSAGE() as errorMessage
+end catch
+
+select * from Student
+---CTE
+with CTE_Student
+as
+(
+select * from Student where age>15
+)
+select * from CTE_Student
+
+with CTE_Student2
+as
+(
+select * from Student where age<15
+)
+select * from CTE_Student2 where city = 'New York'
+
+--with columns
+with CTE_Student3(std_1,std_age)
+as
+(
+select id , age from Student where age>15
+)
+select std_1 , std_age from CTE_Student3
+
